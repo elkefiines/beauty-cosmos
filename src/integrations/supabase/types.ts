@@ -14,7 +14,119 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      cart_items: {
+        Row: {
+          created_at: string
+          id: string
+          product_id: string
+          qty: number
+          session_id: string
+          shade_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          product_id: string
+          qty?: number
+          session_id: string
+          shade_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          product_id?: string
+          qty?: number
+          session_id?: string
+          shade_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cart_items_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cart_items_shade_id_fkey"
+            columns: ["shade_id"]
+            isOneToOne: false
+            referencedRelation: "product_shades"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      product_shades: {
+        Row: {
+          hex: string
+          id: string
+          name: string
+          product_id: string
+          sku: string
+          sort_order: number
+        }
+        Insert: {
+          hex: string
+          id?: string
+          name: string
+          product_id: string
+          sku: string
+          sort_order?: number
+        }
+        Update: {
+          hex?: string
+          id?: string
+          name?: string
+          product_id?: string
+          sku?: string
+          sort_order?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_shades_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      products: {
+        Row: {
+          base_price: number
+          category: string
+          created_at: string
+          description: string
+          hero_image_url: string | null
+          id: string
+          model_kind: string
+          name: string
+          slug: string
+        }
+        Insert: {
+          base_price: number
+          category: string
+          created_at?: string
+          description?: string
+          hero_image_url?: string | null
+          id?: string
+          model_kind: string
+          name: string
+          slug: string
+        }
+        Update: {
+          base_price?: number
+          category?: string
+          created_at?: string
+          description?: string
+          hero_image_url?: string | null
+          id?: string
+          model_kind?: string
+          name?: string
+          slug?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
