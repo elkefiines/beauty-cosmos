@@ -36,9 +36,7 @@ export function CartDrawer({ open, onClose }: { open: boolean; onClose: () => vo
         </div>
 
         <div className="flex-1 overflow-y-auto px-8 py-6">
-          {!mounted || isLoading ? (
-            <p className="text-xs uppercase tracking-widest text-muted-foreground">Loading…</p>
-          ) : lines.length === 0 ? (
+          {!mounted || isLoading || lines.length === 0 ? (
             <div className="text-center mt-20">
               <p className="font-serif italic text-2xl mb-3">Your bag is empty.</p>
               <p className="text-xs uppercase tracking-widest text-muted-foreground mb-8">
