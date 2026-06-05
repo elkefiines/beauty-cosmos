@@ -1,6 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useProducts } from "@/lib/useProducts";
 import { ProductCard } from "@/components/ProductCard";
+import { HeroViewer } from "@/components/HeroViewer";
+import { PhotoReel } from "@/components/PhotoReel";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -25,16 +27,16 @@ function Home() {
           <div className="absolute bottom-1/4 -right-20 size-96 border border-accent/20 rounded-full blur-2xl" />
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-12 w-full max-w-7xl mx-auto items-center relative z-10 gap-12">
-          <div className="lg:col-span-7">
+          <div className="lg:col-span-7 animate-rise">
             <h1 className="font-serif italic text-[64px] md:text-[110px] lg:text-[130px] leading-[0.85] -ml-1 mb-10">
               <span className="block">The New</span>
               <span className="block lg:pl-20">Geometry</span>
               <span className="block text-accent">of Beauty</span>
             </h1>
             <p className="max-w-md text-sm leading-relaxed text-muted-foreground mb-8">
-              Experience cosmetics through the lens of architectural precision. Our laboratory synthesizes
-              molecular science with sculptural form — every product, viewable in three dimensions before
-              it touches your skin.
+              Experience cosmetics through the lens of architectural precision. Our laboratory
+              synthesizes molecular science with sculptural form — every product, viewable in
+              three dimensions before it touches your skin.
             </p>
             <Link
               to="/shop"
@@ -43,31 +45,19 @@ function Home() {
               Enter the Laboratory
             </Link>
           </div>
-          <div className="lg:col-span-5 relative flex justify-end">
-            <div className="relative w-full max-w-sm aspect-[4/5]">
-              <div className="absolute -inset-4 bg-foreground/5 blur-2xl rounded-full scale-90 translate-y-12" />
-              <div className="relative animate-float">
-                <div className="w-full aspect-[4/5] bg-surface flex items-center justify-center border border-foreground/5">
-                  <div className="text-center">
-                    <div className="size-32 mx-auto mb-4 rounded-full bg-gradient-to-br from-accent/40 to-foreground/10 blur-sm" />
-                    <span className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground">
-                      Volume No. 1
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <div className="absolute -top-8 -right-8 size-32 border border-accent/40 rounded-full flex items-center justify-center animate-[spin_20s_linear_infinite] px-4 text-center">
-                <span className="text-[8px] uppercase tracking-[0.25em] text-accent leading-tight">
-                  Organic Synthesis · Molecular Form ·
-                </span>
-              </div>
+          <div className="lg:col-span-5 relative flex justify-end animate-float">
+            <div className="w-full max-w-sm">
+              <HeroViewer />
             </div>
           </div>
         </div>
       </header>
 
-      {/* Categories / Featured */}
-      <section className="py-32 px-6 md:px-12 border-t border-border">
+      {/* Photo reel */}
+      <PhotoReel />
+
+      {/* Categories / Featured with 3D tilt */}
+      <section className="py-32 px-6 md:px-12 border-t border-border perspective-1000">
         <div className="max-w-7xl mx-auto">
           <div className="flex justify-between items-end mb-20">
             <div>
@@ -78,7 +68,9 @@ function Home() {
             </div>
             <div className="hidden md:flex items-center gap-4">
               <div className="w-12 h-px bg-foreground/20" />
-              <span className="text-[10px] uppercase tracking-widest">01 — {String(featured.length).padStart(2, "0")}</span>
+              <span className="text-[10px] uppercase tracking-widest">
+                01 — {String(featured.length).padStart(2, "0")}
+              </span>
               <Link to="/shop" className="text-[10px] uppercase tracking-[0.25em] hover:text-accent">
                 View All
               </Link>
@@ -86,7 +78,10 @@ function Home() {
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-16">
             {featured.map((p, i) => (
-              <div key={p.id} className={i % 2 === 1 ? "md:pt-12" : i === 2 ? "md:pt-6" : ""}>
+              <div
+                key={p.id}
+                className={`tilt-card ${i % 2 === 1 ? "md:pt-12" : i === 2 ? "md:pt-6" : ""}`}
+              >
                 <ProductCard product={p} index={i} />
               </div>
             ))}
@@ -106,8 +101,8 @@ function Home() {
               Inspect every <br />molecule.
             </h2>
             <p className="text-background/60 text-sm max-w-md leading-relaxed">
-              Each formulation is rendered as a three-dimensional object. Rotate, study, and consider its
-              architecture before it ever reaches your skin.
+              Each formulation is rendered as a three-dimensional object. Rotate, study, and consider
+              its architecture before it ever reaches your skin.
             </p>
             <Link
               to="/shop"
