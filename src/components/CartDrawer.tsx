@@ -1,10 +1,12 @@
 import { Link } from "@tanstack/react-router";
 import { X, Minus, Plus } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useCart } from "@/lib/useCart";
 
 export function CartDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { lines, subtotal, updateQty, remove, isLoading } = useCart();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     if (!open) return;
