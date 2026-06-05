@@ -3,6 +3,7 @@ import { useProducts } from "@/lib/useProducts";
 import { ProductCard } from "@/components/ProductCard";
 import { HeroViewer } from "@/components/HeroViewer";
 import { PhotoReel } from "@/components/PhotoReel";
+import { useReveal } from "@/lib/useReveal";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -17,30 +18,33 @@ export const Route = createFileRoute("/")({
 function Home() {
   const { data: products = [] } = useProducts();
   const featured = products.slice(0, 4);
+  const featuredRef = useReveal<HTMLDivElement>();
+  const specimenRef = useReveal<HTMLDivElement>();
 
   return (
     <div className="bg-background text-foreground">
       {/* Hero */}
-      <header className="relative min-h-screen flex flex-col justify-center px-6 md:px-12 pt-28 overflow-hidden">
+      <header className="relative min-h-screen flex flex-col justify-center px-6 md:px-12 pt-28 overflow-hidden perspective-2000">
         <div className="absolute inset-0 opacity-30 pointer-events-none">
-          <div className="absolute top-1/4 -left-20 size-96 border border-accent/30 rounded-full blur-3xl" />
-          <div className="absolute bottom-1/4 -right-20 size-96 border border-accent/20 rounded-full blur-2xl" />
+          <div className="absolute top-1/4 -left-20 size-96 border border-accent/30 rounded-full blur-3xl animate-drift" />
+          <div className="absolute bottom-1/4 -right-20 size-96 border border-accent/20 rounded-full blur-2xl animate-drift" style={{ animationDelay: "-6s" }} />
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-12 w-full max-w-7xl mx-auto items-center relative z-10 gap-12">
-          <div className="lg:col-span-7 animate-rise">
+          <div className="lg:col-span-7 animate-rise preserve-3d">
             <h1 className="font-serif italic text-[64px] md:text-[110px] lg:text-[130px] leading-[0.85] -ml-1 mb-10">
-              <span className="block">The New</span>
-              <span className="block lg:pl-20">Geometry</span>
-              <span className="block text-accent">of Beauty</span>
+              <span className="block animate-rise" style={{ animationDelay: "0.1s" }}>The New</span>
+              <span className="block lg:pl-20 animate-rise" style={{ animationDelay: "0.25s" }}>Geometry</span>
+              <span className="block text-accent animate-rise" style={{ animationDelay: "0.4s" }}>of Beauty</span>
             </h1>
-            <p className="max-w-md text-sm leading-relaxed text-muted-foreground mb-8">
+            <p className="max-w-md text-sm leading-relaxed text-muted-foreground mb-8 animate-rise" style={{ animationDelay: "0.55s" }}>
               Experience cosmetics through the lens of architectural precision. Our laboratory
               synthesizes molecular science with sculptural form — every product, viewable in
               three dimensions before it touches your skin.
             </p>
             <Link
               to="/shop"
-              className="inline-block px-10 py-4 bg-foreground text-background text-[10px] uppercase tracking-[0.3em] hover:bg-accent transition-colors"
+              className="inline-block px-10 py-4 bg-foreground text-background text-[10px] uppercase tracking-[0.3em] hover:bg-accent transition-all duration-500 hover:translate-y-[-2px] hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.4)] animate-rise"
+              style={{ animationDelay: "0.7s" }}
             >
               Enter the Laboratory
             </Link>
@@ -57,8 +61,8 @@ function Home() {
       <PhotoReel />
 
       {/* Categories / Featured with 3D tilt */}
-      <section className="py-32 px-6 md:px-12 border-t border-border perspective-1000">
-        <div className="max-w-7xl mx-auto">
+      <section className="py-32 px-6 md:px-12 border-t border-border perspective-2000">
+        <div ref={featuredRef} className="reveal max-w-7xl mx-auto">
           <div className="flex justify-between items-end mb-20">
             <div>
               <span className="text-[10px] uppercase tracking-[0.3em] text-accent block mb-3">
@@ -81,6 +85,7 @@ function Home() {
               <div
                 key={p.id}
                 className={`tilt-card ${i % 2 === 1 ? "md:pt-12" : i === 2 ? "md:pt-6" : ""}`}
+                style={{ transitionDelay: `${i * 80}ms` }}
               >
                 <ProductCard product={p} index={i} />
               </div>
@@ -90,9 +95,9 @@ function Home() {
       </section>
 
       {/* Specimen pitch */}
-      <section className="bg-foreground text-background py-32 px-6 md:px-12 overflow-hidden relative">
+      <section className="bg-foreground text-background py-32 px-6 md:px-12 overflow-hidden relative perspective-2000">
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,var(--accent)_0%,transparent_70%)]" />
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
+        <div ref={specimenRef} className="reveal max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
           <div className="space-y-8">
             <span className="text-accent text-[10px] uppercase tracking-[0.4em] font-medium">
               Interactive Specimen
@@ -106,18 +111,19 @@ function Home() {
             </p>
             <Link
               to="/shop"
-              className="inline-block px-10 py-4 bg-background text-foreground text-[10px] uppercase tracking-[0.3em] hover:bg-accent hover:text-background transition-colors"
+              className="inline-block px-10 py-4 bg-background text-foreground text-[10px] uppercase tracking-[0.3em] hover:bg-accent hover:text-background transition-all duration-500 hover:translate-y-[-2px]"
             >
               Browse the Catalog
             </Link>
           </div>
-          <div className="relative aspect-square flex items-center justify-center">
+          <div className="relative aspect-square flex items-center justify-center preserve-3d">
             <div className="absolute inset-0 flex items-center justify-center opacity-30">
-              <div className="size-full border border-background rounded-full animate-[spin_25s_linear_infinite]" />
+              <div className="size-full border border-background rounded-full animate-slow-spin" />
               <div className="absolute size-[80%] border border-background/40 rounded-full animate-[spin_15s_linear_infinite_reverse]" />
+              <div className="absolute size-[60%] border border-background/20 rounded-full animate-slow-spin" style={{ animationDuration: "25s" }} />
             </div>
-            <div className="relative z-10 size-48 rounded-full bg-gradient-to-br from-accent/60 to-background/10 blur-2xl" />
-            <div className="absolute z-20 text-center bg-foreground/40 backdrop-blur-sm p-8 border border-background/10">
+            <div className="relative z-10 size-48 rounded-full bg-gradient-to-br from-accent/60 to-background/10 blur-2xl animate-drift" />
+            <div className="absolute z-20 text-center bg-foreground/40 backdrop-blur-sm p-8 border border-background/10 tilt-card">
               <div className="size-12 rounded-full border border-background/20 mx-auto mb-3 flex items-center justify-center">
                 <div className="size-2 bg-accent rounded-full animate-pulse" />
               </div>
