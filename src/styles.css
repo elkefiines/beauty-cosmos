@@ -113,3 +113,28 @@
   50% { transform: translateY(-16px); }
 }
 .animate-float { animation: float 8s ease-in-out infinite; }
+
+@keyframes marquee-x {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
+}
+.animate-marquee { animation: marquee-x 40s linear infinite; }
+.animate-marquee-slow { animation: marquee-x 70s linear infinite; }
+.animate-marquee-reverse { animation: marquee-x 55s linear infinite reverse; }
+
+@keyframes rise-in {
+  0% { opacity: 0; transform: translate3d(0, 40px, 0) rotateX(8deg); }
+  100% { opacity: 1; transform: translate3d(0, 0, 0) rotateX(0deg); }
+}
+.animate-rise { animation: rise-in 1s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+.perspective-1000 { perspective: 1200px; }
+.preserve-3d { transform-style: preserve-3d; }
+.tilt-card {
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.7s ease;
+  transform-style: preserve-3d;
+}
+.tilt-card:hover {
+  transform: rotateX(6deg) rotateY(-8deg) translateZ(20px);
+  box-shadow: 0 30px 60px -20px color-mix(in srgb, var(--foreground) 25%, transparent);
+}
