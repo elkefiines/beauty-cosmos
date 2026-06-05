@@ -102,7 +102,7 @@ export function CartDrawer({ open, onClose }: { open: boolean; onClose: () => vo
           )}
         </div>
 
-        {lines.length > 0 && (
+        {mounted && lines.length > 0 && (
           <div className="border-t border-border px-8 py-6 bg-surface/50">
             <div className="flex justify-between items-baseline mb-6">
               <span className="text-[10px] uppercase tracking-[0.25em]">Subtotal</span>
