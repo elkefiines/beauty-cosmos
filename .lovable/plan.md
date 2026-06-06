@@ -1,68 +1,70 @@
-## Aetheria — 3D Cosmetics Marketplace (Storefront)
 
-A premium beauty storefront in the "Sculpted Minimalism v2" direction: editorial typography (Cormorant Garamond + Montserrat), warm canvas palette (#FCFAF7 / #1C1C1C / #A67C52), generous whitespace, and a hero 3D product viewer on detail pages.
+# Home page → cinematic 3D film
 
-### Pages (TanStack routes)
+Inspired by award-winning beauty/luxury sites (Aesop, Tom Ford, Diptyque editorial, Active Theory case studies, Resn, Locke & Key, Igloo Inc). The whole page reads as one 3D space the viewer travels through — every section sits on a Z-axis, images and short looping videos are the medium, and scroll acts as the camera.
 
-- `/` — Home: sticky-depth hero, floating product, "Elemental Forms" categories grid, featured 3D specimen section, footer
-- `/shop` — Catalog grid with category filter (Lipstick, Foundation, Skincare, Fragrance) and shade swatches
-- `/product/$slug` — Detail page with **rotatable 3D viewer** (react-three-fiber), shade selector, description, add to cart
-- `/cart` — Cart line items, quantities, subtotal, checkout placeholder
+## Reference language
 
-Cart drawer accessible from nav on every page. No auth, no payments (per scope).
+- **Scroll-as-camera** (à la Active Theory / Igloo Inc): one continuous space, sections enter from depth, not just from below.
+- **Editorial reel + product specimen** (Aesop / Diptyque): muted palette, serif italic, generous whitespace, hover lifts.
+- **Looping micro-videos** (Tom Ford, Byredo): 4-8 sec silent loops as "living photography" — pour shots, swatches, texture macros — autoplay, muted, loop, playsInline.
+- **3D product hero** (current viewer kept) framed inside a "vitrine" with depth.
 
-### 3D Viewer
-
-- `@react-three/fiber` + `@react-three/drei` for `<Canvas>`, `OrbitControls`, `Environment`, `ContactShadows`
-- Procedural GLSL-free meshes per category (lipstick: capsule + cylinder; foundation: rounded box + cap; serum dropper: cylinder + sphere; fragrance: extruded prism) — colored by selected shade, lit with studio HDRI preset
-- Subtle auto-rotate until user interacts; affordance pill: "Drag to rotate"
-- Lazy-loaded behind `<Suspense>` so the rest of the page is instant
-
-### Data (Lovable Cloud)
-
-Tables:
-- `products` — id, slug, name, category, description, base_price, model_kind ('lipstick'|'foundation'|'serum'|'fragrance'), hero_image_url
-- `product_shades` — id, product_id, name, hex, sku
-- `cart_items` — id, session_id (anon UUID in localStorage), product_id, shade_id, qty
-
-RLS: products + shades public read; cart_items scoped by `session_id` (anonymous cart, no auth needed).
-Seed ~8 products across the 4 categories.
-
-### State & utilities
-
-- TanStack Query for product fetching via server functions in `src/lib/*.functions.ts`
-- Anonymous `sessionId` in localStorage; cart hook (`useCart`) wraps add/update/remove + line totals
-- Toast on add-to-cart (sonner)
-
-### Design tokens (src/styles.css)
-
-Replace tokens with: `--background` #FCFAF7, `--foreground` #1C1C1C, `--primary` #1C1C1C, `--accent` #A67C52, `--surface/muted` #F2EFE9. Add `--font-serif` Cormorant Garamond, `--font-sans` Montserrat. Convert to oklch for token block.
-
-### Generated images
-
-Use `imagegen` for category tiles and hero atmospheric shots from the prototype's `data-prompt` placeholders, stored in `src/assets/`.
-
-### Technical notes
+## New page structure (top → bottom)
 
 ```text
-src/
-  routes/
-    __root.tsx        (nav + cart drawer + footer wrapper)
-    index.tsx         (home)
-    shop.tsx
-    product.$slug.tsx
-    cart.tsx
-  components/
-    Nav.tsx, Footer.tsx, CartDrawer.tsx
-    ProductCard.tsx, ShadeSelector.tsx
-    viewer/ProductViewer.tsx + meshes/{Lipstick,Foundation,Serum,Fragrance}.tsx
-  lib/
-    products.functions.ts, cart.functions.ts
-    useCart.ts, sessionId.ts
+[1] Cinematic hero        — 3D viewer + looping background video + parallax headline planes
+[2] Living reel           — alternating image/video cards on dual marquee, hover lifts in Z
+[3] Ritual film strip     — 3 short videos as 3D film frames sliding past camera
+[4] Elemental forms       — product grid on a 3D shelf (staggered Z, tilt on cursor)
+[5] Specimen pitch        — orbiting rings + 3D product viewer
+[6] Manifesto             — oversized serif assembling word-by-word with rotateX flips
+[7] Footer entrance       — footer rises from depth with accent line sweep
 ```
 
-Packages to add: `three`, `@react-three/fiber`, `@react-three/drei`.
+## Motion system (one coherent camera)
 
-### Out of scope (future)
+- **Shared perspective wrapper** on the page (`perspective: 2400px`) so depth reads continuously.
+- **Scroll engine** (`useScrollScene` hook): per-section progress drives `translateZ`, `rotateX`, opacity, and parallax offsets.
+- **Entrance default**: `translateZ(-280px) rotateX(6deg) opacity 0` → settle to flat at section center.
+- **Per-layer parallax**: each section has 3 depth layers (bg orbs/video, mid content, fg accent) moving at different Z speeds.
+- **Section seams**: a thin bronze line sweeps horizontally between sections; next section folds in from depth (~700ms cubic-bezier).
+- **Cursor tilt** on the hero viewer and product cards (kept).
+- **Marquee reel** with hover-pause + 3D row tilt tied to scroll.
 
-Auth, payments/checkout, vendor onboarding, AR try-on, reviews, search.
+## Imagery + video plan
+
+Generate locally (no external CDN) and reuse `src/assets/`:
+
+- **Hero loop**: 1 short macro video (serum drop, ~6s, 1280×720, h264, muted loop) → upload via `lovable-assets`.
+- **Ritual film strip**: 3 short loops (pour, swatch on skin, fragrance mist) → upload via `lovable-assets`.
+- **Reel**: keep existing 6 reel images, add 2 more macro stills generated with imagegen.
+- All `<video>` tags: `autoPlay muted loop playsInline preload="metadata"` + `poster` (first-frame jpg) so SSR/preview never shows a black box.
+
+Sources: prefer `videogen--generate_video` for the 4 short loops (each ≤6s). If unavailable, fall back to high-quality static images with subtle CSS Ken-Burns + grain to simulate motion.
+
+## Files
+
+- `src/lib/useScrollScene.ts` — new scroll-progress hook (rAF + IntersectionObserver).
+- `src/components/sections/CinematicHero.tsx` — replaces inline hero; adds background loop video layer behind the 3D viewer.
+- `src/components/sections/LivingReel.tsx` — refactor of `PhotoReel` mixing `<img>` and `<video>` cards.
+- `src/components/sections/RitualFilmStrip.tsx` — new horizontal film-frame section.
+- `src/components/sections/ElementalForms.tsx` — extract from index, add 3D shelf staggering.
+- `src/components/sections/Specimen.tsx` — extract from index.
+- `src/components/sections/Manifesto.tsx` — new word-by-word reveal.
+- `src/components/SectionSeam.tsx` — shared seam transition between sections.
+- `src/styles.css` — add scroll-scene utilities, reduced-motion overrides, video poster styles.
+- `src/routes/index.tsx` — recompose into the 7 sections above inside a single perspective wrapper.
+- `src/assets/` — new `.asset.json` pointers for hero + 3 ritual videos + 2 macro stills.
+
+## Performance, accessibility, mobile
+
+- Videos: muted, looped, `playsInline`, `preload="metadata"`, lazy-mounted via IntersectionObserver; paused when offscreen.
+- `prefers-reduced-motion`: disable Z transforms, parallax, marquee, video autoplay → fall back to posters + fades only.
+- Mobile (<768px): reduce Z ranges ~40%, drop cursor tilt, swap hero video for poster, single-row reel.
+- All transforms on `transform`/`opacity` only; `will-change` added on enter, removed on settle.
+- 3D viewer stays lazy-loaded; no extra WebGL added.
+
+## Scope
+
+Presentation only — no schema, routing, auth, or data changes. Existing product data + cart flow untouched.
