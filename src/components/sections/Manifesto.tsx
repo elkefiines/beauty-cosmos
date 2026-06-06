@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+
 import { useScrollScene, mapRange } from "@/lib/useScrollScene";
 
 const lines = [
