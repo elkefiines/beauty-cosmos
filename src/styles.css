@@ -185,3 +185,16 @@
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .animate-float,
+  .animate-drift,
+  .animate-slow-spin,
+  .animate-marquee,
+  .animate-marquee-slow,
+  .animate-marquee-reverse,
+  .animate-rise { animation: none !important; }
+  .tilt-card:hover,
+  .reel-row .reel-card:hover { transform: none !important; }
+}
+
+
