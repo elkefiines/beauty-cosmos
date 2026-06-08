@@ -42,55 +42,62 @@
 :root {
   --radius: 0px;
 
-  /* Sculpted minimalism palette — #FCFAF7 / #1C1C1C / #A67C52 / #F2EFE9 */
-  --background: oklch(0.984 0.005 80);          /* canvas #FCFAF7 */
-  --foreground: oklch(0.205 0 0);               /* ink #1C1C1C */
-  --surface: oklch(0.951 0.008 80);             /* #F2EFE9 */
-  --card: oklch(1 0 0);
+  /* Warm Botanical Apothecary — #1a140e ink / #3d2a1a bark / #b97a4a copper / #e8d9c2 cream */
+  --background: oklch(0.13 0.018 50);           /* ink #1a140e */
+  --foreground: oklch(0.93 0.025 75);           /* cream #e8d9c2 */
+  --surface: oklch(0.22 0.025 50);              /* bark #3d2a1a */
+  --card: oklch(0.18 0.022 50);
   --card-foreground: var(--foreground);
-  --popover: oklch(1 0 0);
+  --popover: oklch(0.18 0.022 50);
   --popover-foreground: var(--foreground);
 
-  --primary: oklch(0.205 0 0);                  /* ink */
-  --primary-foreground: oklch(0.984 0.005 80);
-  --secondary: oklch(0.951 0.008 80);
+  --primary: oklch(0.93 0.025 75);              /* cream */
+  --primary-foreground: oklch(0.13 0.018 50);   /* ink */
+  --secondary: oklch(0.22 0.025 50);
   --secondary-foreground: var(--foreground);
-  --muted: oklch(0.951 0.008 80);
-  --muted-foreground: oklch(0.45 0.015 70);
+  --muted: oklch(0.22 0.025 50);
+  --muted-foreground: oklch(0.7 0.03 75);
 
-  --accent: oklch(0.62 0.07 60);                /* warm bronze #A67C52 */
-  --accent-foreground: oklch(1 0 0);
+  --accent: oklch(0.68 0.11 55);                /* copper #b97a4a */
+  --accent-foreground: oklch(0.13 0.018 50);
+  --accent-glow: oklch(0.78 0.13 65);
 
   --destructive: oklch(0.55 0.2 27);
   --destructive-foreground: oklch(1 0 0);
 
-  --border: oklch(0.205 0 0 / 8%);
-  --input: oklch(0.205 0 0 / 12%);
-  --ring: oklch(0.62 0.07 60);
+  --border: oklch(0.93 0.025 75 / 10%);
+  --input: oklch(0.93 0.025 75 / 14%);
+  --ring: oklch(0.68 0.11 55);
+
+  --gradient-warm: linear-gradient(180deg, oklch(0.13 0.018 50) 0%, oklch(0.22 0.025 50) 100%);
+  --gradient-copper: linear-gradient(135deg, oklch(0.68 0.11 55), oklch(0.78 0.13 65));
+  --shadow-vitrine: 0 40px 90px -30px oklch(0 0 0 / 70%), 0 0 0 1px oklch(0.68 0.11 55 / 25%) inset, 0 0 60px -20px oklch(0.68 0.11 55 / 30%) inset;
 }
 
 .dark {
-  --background: oklch(0.18 0 0);
-  --foreground: oklch(0.96 0.005 80);
-  --surface: oklch(0.24 0 0);
-  --card: oklch(0.22 0 0);
+  /* Same palette — site is dark-by-default */
+  --background: oklch(0.13 0.018 50);
+  --foreground: oklch(0.93 0.025 75);
+  --surface: oklch(0.22 0.025 50);
+  --card: oklch(0.18 0.022 50);
   --card-foreground: var(--foreground);
-  --popover: var(--card);
+  --popover: oklch(0.18 0.022 50);
   --popover-foreground: var(--foreground);
-  --primary: oklch(0.96 0.005 80);
-  --primary-foreground: oklch(0.18 0 0);
-  --secondary: oklch(0.24 0 0);
+  --primary: oklch(0.93 0.025 75);
+  --primary-foreground: oklch(0.13 0.018 50);
+  --secondary: oklch(0.22 0.025 50);
   --secondary-foreground: var(--foreground);
-  --muted: oklch(0.24 0 0);
-  --muted-foreground: oklch(0.7 0.015 70);
-  --accent: oklch(0.62 0.07 60);
-  --accent-foreground: oklch(0.18 0 0);
+  --muted: oklch(0.22 0.025 50);
+  --muted-foreground: oklch(0.7 0.03 75);
+  --accent: oklch(0.68 0.11 55);
+  --accent-foreground: oklch(0.13 0.018 50);
   --destructive: oklch(0.55 0.2 27);
   --destructive-foreground: oklch(1 0 0);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 14%);
-  --ring: oklch(0.62 0.07 60);
+  --border: oklch(0.93 0.025 75 / 10%);
+  --input: oklch(0.93 0.025 75 / 14%);
+  --ring: oklch(0.68 0.11 55);
 }
+
 
 @layer base {
   * {
@@ -196,5 +203,33 @@
   .tilt-card:hover,
   .reel-row .reel-card:hover { transform: none !important; }
 }
+
+/* Apothecary utilities */
+.gradient-warm { background: var(--gradient-warm); }
+.gradient-copper { background: var(--gradient-copper); }
+.shadow-vitrine { box-shadow: var(--shadow-vitrine); }
+.text-copper { color: var(--accent); }
+.text-cream { color: var(--foreground); }
+
+@keyframes orbit-slow {
+  to { transform: rotate(360deg); }
+}
+.animate-orbit { animation: orbit-slow 40s linear infinite; }
+.animate-orbit-reverse { animation: orbit-slow 28s linear infinite reverse; }
+
+/* Vignette overlay for video panels */
+.vignette::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 30%, oklch(0.13 0.018 50 / 0.7) 100%);
+}
+
+/* Copper hairline */
+.hairline-copper {
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+}
+
 
 
