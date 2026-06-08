@@ -3,8 +3,9 @@ export function Footer() {
     <footer className="px-6 md:px-12 pt-32 pb-12 bg-background border-t border-border">
       <div className="grid grid-cols-1 md:grid-cols-12 gap-12 max-w-7xl mx-auto">
         <div className="md:col-span-4 font-serif italic text-4xl leading-tight">
-          Preserving the geometry of the self.
+          Distilled from earth, by hand.
         </div>
+
         <div className="md:col-span-4 grid grid-cols-2 gap-12">
           <div className="flex flex-col gap-4">
             <span className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">Explore</span>
@@ -34,9 +35,10 @@ export function Footer() {
         </div>
       </div>
       <div className="max-w-7xl mx-auto mt-20 flex justify-between items-end text-[10px] text-muted-foreground uppercase tracking-[0.2em]">
-        <span>© {new Date().getFullYear()} Aetheria Lab</span>
-        <span>Geometry of Beauty</span>
+        <span>© {new Date().getFullYear()} Botanica Atelier</span>
+        <span>Hand-distilled, small batch</span>
       </div>
+
     </footer>
   );
 }

@@ -10,8 +10,9 @@ import reel4 from "@/assets/reel-4.jpg";
 const frames = [
   { src: pour.url, poster: reel2, label: "Pour", caption: "Liquid Gold" },
   { src: swatch.url, poster: reel5, label: "Swatch", caption: "Second Skin" },
-  { src: mist.url, poster: reel4, label: "Mist", caption: "Desert Bloom" },
+  { src: mist.url, poster: reel4, label: "Mist", caption: "Hydrosol" },
 ];
+
 
 export function RitualFilmStrip() {
   const { ref, progress } = useScrollScene<HTMLDivElement>();

@@ -5,8 +5,10 @@ import reel3 from "@/assets/reel-3.jpg";
 import reel4 from "@/assets/reel-4.jpg";
 import reel5 from "@/assets/reel-5.jpg";
 import reel6 from "@/assets/reel-6.jpg";
-import reel7 from "@/assets/reel-7.jpg";
-import reel8 from "@/assets/reel-8.jpg";
+import bot1 from "@/assets/botanical-1.jpg";
+import bot2 from "@/assets/botanical-2.jpg";
+import bot3 from "@/assets/botanical-3.jpg";
+import bot4 from "@/assets/botanical-4.jpg";
 import pour from "@/assets/ritual-pour.mp4.asset.json";
 import mist from "@/assets/ritual-mist.mp4.asset.json";
 import { useReveal } from "@/lib/useReveal";
@@ -18,19 +20,21 @@ type Item =
   | { kind: "video"; src: string; poster: string; caption: string; tag: string };
 
 const row1: Item[] = [
-  { kind: "img", src: reel1, caption: "Sculpted Rouge", tag: "Lipstick · No. 04" },
-  { kind: "video", src: pour.url, poster: reel2, caption: "Liquid Gold", tag: "Serum · in motion" },
-  { kind: "img", src: reel3, caption: "Second Skin", tag: "Editorial" },
-  { kind: "img", src: reel7, caption: "Bronze Cream", tag: "Texture Study" },
-  { kind: "img", src: reel4, caption: "Desert Bloom", tag: "Fragrance" },
+  { kind: "img", src: bot1, caption: "Chamomile & Lavender", tag: "Infusion · No. 04" },
+  { kind: "video", src: pour.url, poster: bot3, caption: "Amber Pour", tag: "Tincture · in motion" },
+  { kind: "img", src: bot2, caption: "Amber Flacon", tag: "Editorial" },
+  { kind: "img", src: reel3, caption: "Second Skin", tag: "Balm · No. 02" },
+  { kind: "img", src: bot4, caption: "By the Hand", tag: "Atelier study" },
 ];
 const row2: Item[] = [
-  { kind: "img", src: reel8, caption: "Marble Compact", tag: "Powder · No. 02" },
-  { kind: "img", src: reel5, caption: "Silk Veil", tag: "Foundation" },
-  { kind: "video", src: mist.url, poster: reel4, caption: "Atmosphere", tag: "Fragrance · in motion" },
-  { kind: "img", src: reel6, caption: "Bronze Index", tag: "Powder" },
-  { kind: "img", src: reel2, caption: "Liquid Gold", tag: "Serum · 30ml" },
+  { kind: "img", src: reel5, caption: "Silk Veil", tag: "Hydrosol" },
+  { kind: "img", src: bot3, caption: "Honey Drop", tag: "Texture study" },
+  { kind: "video", src: mist.url, poster: reel4, caption: "Desert Bloom", tag: "Hydrosol · in motion" },
+  { kind: "img", src: reel6, caption: "Bronze Index", tag: "Pressed pigment" },
+  { kind: "img", src: reel2, caption: "Liquid Gold", tag: "Oil · 30ml" },
+  { kind: "img", src: reel1, caption: "Sculpted Balm", tag: "No. 04" },
 ];
+
 
 function Card({ item }: { item: Item }) {
   return (
