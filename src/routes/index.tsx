@@ -105,51 +105,80 @@ function ElementalForms() {
 
 function Specimen() {
   const ref = useReveal<HTMLDivElement>();
+  const { ref: sceneRef, progress } = useScrollScene<HTMLDivElement>();
+  const ringRot = mapRange(progress, 0, 1, -40, 40);
+  const innerRot = mapRange(progress, 0, 1, 60, -60);
   return (
-    <section className="bg-foreground text-background py-32 px-6 md:px-12 overflow-hidden relative perspective-2000">
-      <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,var(--accent)_0%,transparent_70%)]" />
+    <section
+      ref={sceneRef}
+      className="relative bg-background text-foreground py-32 px-6 md:px-12 overflow-hidden perspective-2000"
+    >
+      {/* Botanical macro video behind a vitrine */}
+      <div className="absolute inset-0">
+        <LoopVideo
+          src={specimenBg.url}
+          poster={specimenPoster}
+          className="absolute inset-0 size-full"
+        />
+        <div className="absolute inset-0 bg-background/70" />
+        <div className="absolute inset-0 vignette" />
+      </div>
+
       <div
         ref={ref}
-        className="reveal max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10"
+        className="reveal relative z-10 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center"
       >
         <div className="space-y-8">
           <span className="text-accent text-[10px] uppercase tracking-[0.4em] font-medium">
-            Interactive Specimen
+            Single Specimen · 01
           </span>
           <h2 className="font-serif italic text-5xl md:text-7xl leading-[0.9]">
-            Inspect every <br />
-            molecule.
+            One bottle. <br />
+            One garden.
           </h2>
-          <p className="text-background/60 text-sm max-w-md leading-relaxed">
-            Each formulation is rendered as a three-dimensional object. Rotate, study, and consider
-            its architecture before it ever reaches your skin.
+          <p className="text-muted-foreground text-sm max-w-md leading-relaxed">
+            Each flacon is hand-blended in small batches from a single season's harvest —
+            traceable to the field, the press, and the hand that decanted it.
           </p>
           <Link
             to="/shop"
-            className="inline-block px-10 py-4 bg-background text-foreground text-[10px] uppercase tracking-[0.3em] hover:bg-accent hover:text-background transition-all duration-500 hover:translate-y-[-2px]"
+            className="inline-block px-10 py-4 bg-accent text-accent-foreground text-[10px] uppercase tracking-[0.3em] hover:bg-foreground hover:text-background transition-all duration-500 hover:translate-y-[-2px]"
           >
-            Browse the Catalog
+            Browse the Apothecary
           </Link>
         </div>
         <div className="relative aspect-square flex items-center justify-center preserve-3d">
-          <div className="absolute inset-0 flex items-center justify-center opacity-30">
-            <div className="size-full border border-background rounded-full animate-slow-spin" />
-            <div className="absolute size-[80%] border border-background/40 rounded-full animate-[spin_15s_linear_infinite_reverse]" />
+          {/* Orbiting copper rings */}
+          <div className="absolute inset-0 flex items-center justify-center">
             <div
-              className="absolute size-[60%] border border-background/20 rounded-full animate-slow-spin"
-              style={{ animationDuration: "25s" }}
+              className="absolute size-full border border-accent/30 rounded-full"
+              style={{ transform: `rotate(${ringRot}deg)` }}
             />
+            <div
+              className="absolute size-[80%] border border-accent/40 rounded-full animate-orbit-reverse"
+            />
+            <div
+              className="absolute size-[60%] border border-accent/20 rounded-full animate-orbit"
+              style={{ transform: `rotate(${innerRot}deg)` }}
+            />
+            <div className="absolute size-[40%] border border-accent/50 rounded-full" />
           </div>
-          <div className="relative z-10 size-48 rounded-full bg-gradient-to-br from-accent/60 to-background/10 blur-2xl animate-drift" />
-          <div className="absolute z-20 text-center bg-foreground/40 backdrop-blur-sm p-8 border border-background/10 tilt-card">
-            <div className="size-12 rounded-full border border-background/20 mx-auto mb-3 flex items-center justify-center">
+          <div className="relative z-10 size-56 rounded-full bg-gradient-to-br from-accent/50 to-transparent blur-3xl animate-drift" />
+          <div className="absolute z-20 text-center bg-background/60 backdrop-blur-sm p-10 border border-accent/30 tilt-card shadow-vitrine">
+            <div className="size-12 rounded-full border border-accent/40 mx-auto mb-4 flex items-center justify-center">
               <div className="size-2 bg-accent rounded-full animate-pulse" />
             </div>
-            <span className="text-[10px] uppercase tracking-[0.3em] block mb-1">3D Environment</span>
-            <span className="text-[8px] text-background/40 uppercase">Drag to rotate</span>
+            <span className="text-[10px] uppercase tracking-[0.3em] block mb-1 text-accent">
+              Hand-poured
+            </span>
+            <span className="font-serif italic text-lg block">Amber Vial · 30ml</span>
+            <span className="text-[8px] text-muted-foreground uppercase tracking-wider mt-2 block">
+              Rotate to inspect
+            </span>
           </div>
         </div>
       </div>
     </section>
   );
 }
+
