@@ -6,17 +6,20 @@ import { CinematicHero } from "@/components/sections/CinematicHero";
 import { RitualFilmStrip } from "@/components/sections/RitualFilmStrip";
 import { Manifesto } from "@/components/sections/Manifesto";
 import { SectionSeam } from "@/components/SectionSeam";
+import { LoopVideo } from "@/components/LoopVideo";
 import { useReveal } from "@/lib/useReveal";
 import { useScrollScene, mapRange } from "@/lib/useScrollScene";
+import specimenBg from "@/assets/specimen-bg.mp4.asset.json";
+import specimenPoster from "@/assets/botanical-1.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Aetheria — The New Geometry of Beauty" },
+      { title: "Botanica — Hand-Distilled Apothecary" },
       {
         name: "description",
         content:
-          "A 3D cosmetics laboratory. Explore sculptural lipstick, foundation, skincare, and fragrance in three dimensions.",
+          "A small botanical atelier. Pressed oils, infused balms, and single-origin tinctures, decanted into amber glass.",
       },
     ],
   }),
@@ -25,7 +28,7 @@ export const Route = createFileRoute("/")({
 
 function Home() {
   return (
-    <div className="bg-background text-foreground overflow-x-clip">
+    <div className="bg-background text-foreground overflow-x-clip perspective-2000">
       <CinematicHero />
       <SectionSeam />
       <PhotoReel />
@@ -40,6 +43,7 @@ function Home() {
     </div>
   );
 }
+
 
 function ElementalForms() {
   const { data: products = [] } = useProducts();
@@ -65,10 +69,11 @@ function ElementalForms() {
         <div className="flex justify-between items-end mb-20">
           <div>
             <span className="text-[10px] uppercase tracking-[0.3em] text-accent block mb-3">
-              Curated Series
+              The Collection
             </span>
             <h2 className="font-serif italic text-5xl md:text-6xl">Elemental Forms</h2>
           </div>
+
           <div className="hidden md:flex items-center gap-4">
             <div className="w-12 h-px bg-foreground/20" />
             <span className="text-[10px] uppercase tracking-widest">
