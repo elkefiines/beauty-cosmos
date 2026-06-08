@@ -2,8 +2,9 @@ import { Link } from "@tanstack/react-router";
 import { HeroViewer } from "@/components/HeroViewer";
 import { LoopVideo } from "@/components/LoopVideo";
 import { useScrollScene, mapRange } from "@/lib/useScrollScene";
-import heroVideo from "@/assets/hero-loop.mp4.asset.json";
-import reel1 from "@/assets/reel-1.jpg";
+import heroVideo from "@/assets/hero-atelier.mp4.asset.json";
+import heroPoster from "@/assets/botanical-3.jpg";
+
 
 export function CinematicHero() {
   const { ref, progress } = useScrollScene<HTMLDivElement>();
@@ -20,6 +21,7 @@ export function CinematicHero() {
       ref={ref}
       className="relative min-h-screen flex flex-col justify-center px-6 md:px-12 pt-28 overflow-hidden perspective-2000 bg-background"
     >
+
       {/* Background video layer */}
       <div
         className="absolute inset-0 pointer-events-none"
@@ -27,12 +29,13 @@ export function CinematicHero() {
       >
         <LoopVideo
           src={heroVideo.url}
-          poster={reel1}
+          poster={heroPoster}
           className="absolute inset-0 size-full"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/80 via-background/55 to-background" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,transparent_0%,var(--background)_75%)]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/50 to-background" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_30%,transparent_0%,var(--background)_80%)]" />
       </div>
+
 
       {/* Floating ambient rings */}
       <div className="absolute inset-0 opacity-30 pointer-events-none">
