@@ -57,34 +57,34 @@ export function CinematicHero() {
       >
         <div className="lg:col-span-7 animate-rise preserve-3d">
           <span className="text-[10px] uppercase tracking-[0.4em] text-accent block mb-6 animate-rise">
-            Aetheria Laboratoire
+            Botanica · Apothecary · Est. MMXXIV
           </span>
           <h1 className="font-serif italic text-[64px] md:text-[110px] lg:text-[130px] leading-[0.85] -ml-1 mb-10">
             <span className="block animate-rise" style={{ animationDelay: "0.1s" }}>
-              The New
+              Distilled
             </span>
             <span className="block lg:pl-20 animate-rise" style={{ animationDelay: "0.25s" }}>
-              Geometry
+              from earth,
             </span>
             <span className="block text-accent animate-rise" style={{ animationDelay: "0.4s" }}>
-              of Beauty
+              by hand.
             </span>
           </h1>
           <p
             className="max-w-md text-sm leading-relaxed text-muted-foreground mb-8 animate-rise"
             style={{ animationDelay: "0.55s" }}
           >
-            Experience cosmetics through the lens of architectural precision. Our laboratory
-            synthesizes molecular science with sculptural form — every product, viewable in
-            three dimensions before it touches your skin.
+            A small atelier of botanical formulations — pressed oils, infused balms, and
+            single-origin tinctures, decanted into amber glass and shipped from the lab.
           </p>
           <Link
             to="/shop"
-            className="inline-block px-10 py-4 bg-foreground text-background text-[10px] uppercase tracking-[0.3em] hover:bg-accent transition-all duration-500 hover:translate-y-[-2px] hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.4)] animate-rise"
+            className="inline-block px-10 py-4 bg-accent text-accent-foreground text-[10px] uppercase tracking-[0.3em] hover:bg-foreground hover:text-background transition-all duration-500 hover:translate-y-[-2px] hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.6)] animate-rise"
             style={{ animationDelay: "0.7s" }}
           >
-            Enter the Laboratory
+            Enter the Atelier
           </Link>
+
         </div>
         <div className="lg:col-span-5 relative flex justify-end animate-float">
           <div className="w-full max-w-sm">
