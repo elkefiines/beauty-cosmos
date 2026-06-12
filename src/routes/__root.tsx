@@ -13,6 +13,8 @@ import appCss from "../styles.css?url";
 import { Nav } from "../components/Nav";
 import { Footer } from "../components/Footer";
 import { FooterStage } from "../components/sections/FooterStage";
+import { MotionProvider } from "../lib/motion";
+import { MotionControls } from "../components/MotionControls";
 
 function NotFoundComponent() {
   return (
@@ -109,14 +111,17 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   return (
     <QueryClientProvider client={queryClient}>
-      <Nav />
-      <main className="min-h-screen">
-        <Outlet />
-      </main>
-      <FooterStage>
-        <Footer />
-      </FooterStage>
-      <Toaster position="bottom-right" />
+      <MotionProvider>
+        <Nav />
+        <main className="min-h-screen">
+          <Outlet />
+        </main>
+        <FooterStage>
+          <Footer />
+        </FooterStage>
+        <MotionControls />
+        <Toaster position="bottom-right" />
+      </MotionProvider>
     </QueryClientProvider>
   );
 }
