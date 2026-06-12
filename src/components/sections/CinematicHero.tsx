@@ -1,5 +1,4 @@
 import { Link } from "@tanstack/react-router";
-import { HeroViewer } from "@/components/HeroViewer";
 import { LoopVideo } from "@/components/LoopVideo";
 import { useScrollScene, mapRange } from "@/lib/useScrollScene";
 import heroVideo from "@/assets/hero-atelier.mp4.asset.json";
@@ -85,11 +84,6 @@ export function CinematicHero() {
             Enter the Atelier
           </Link>
 
-        </div>
-        <div className="lg:col-span-5 relative flex justify-end animate-float">
-          <div className="w-full max-w-sm">
-            <HeroViewer />
-          </div>
         </div>
       </div>
 
