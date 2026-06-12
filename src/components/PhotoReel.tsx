@@ -82,7 +82,7 @@ export function PhotoReel() {
   return (
     <section
       ref={sceneRef}
-      className="py-32 overflow-hidden border-t border-border bg-surface/40 perspective-2000"
+      className="py-32 overflow-hidden bg-surface/40 preserve-3d"
     >
       <div
         ref={headerRef}
