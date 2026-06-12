@@ -19,7 +19,7 @@ export function CinematicHero() {
   return (
     <header
       ref={ref}
-      className="relative min-h-screen flex flex-col justify-center px-6 md:px-12 pt-28 overflow-hidden perspective-2000 bg-background"
+      className="relative min-h-screen flex flex-col justify-center px-6 md:px-12 pt-28 overflow-hidden preserve-3d bg-background"
     >
 
       {/* Background video layer */}

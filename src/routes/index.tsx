@@ -5,7 +5,7 @@ import { PhotoReel } from "@/components/PhotoReel";
 import { CinematicHero } from "@/components/sections/CinematicHero";
 import { RitualFilmStrip } from "@/components/sections/RitualFilmStrip";
 import { Manifesto } from "@/components/sections/Manifesto";
-import { SectionSeam } from "@/components/SectionSeam";
+import { Stage } from "@/components/sections/Stage";
 import { LoopVideo } from "@/components/LoopVideo";
 import { useReveal } from "@/lib/useReveal";
 import { useScrollScene, mapRange } from "@/lib/useScrollScene";
@@ -28,18 +28,25 @@ export const Route = createFileRoute("/")({
 
 function Home() {
   return (
-    <div className="bg-background text-foreground overflow-x-clip perspective-2000">
-      <CinematicHero />
-      <SectionSeam />
-      <PhotoReel />
-      <SectionSeam />
-      <RitualFilmStrip />
-      <SectionSeam />
-      <ElementalForms />
-      <SectionSeam />
-      <Specimen />
-      <SectionSeam />
-      <Manifesto />
+    <div className="bg-background text-foreground overflow-x-clip perspective-2000 preserve-3d">
+      <Stage depth={0} tilt={0} seam={false}>
+        <CinematicHero />
+      </Stage>
+      <Stage depth={260} tilt={7}>
+        <PhotoReel />
+      </Stage>
+      <Stage depth={300} tilt={8}>
+        <RitualFilmStrip />
+      </Stage>
+      <Stage depth={240} tilt={6}>
+        <ElementalForms />
+      </Stage>
+      <Stage depth={280} tilt={7}>
+        <Specimen />
+      </Stage>
+      <Stage depth={260} tilt={6}>
+        <Manifesto />
+      </Stage>
     </div>
   );
 }
@@ -48,24 +55,10 @@ function Home() {
 function ElementalForms() {
   const { data: products = [] } = useProducts();
   const featured = products.slice(0, 4);
-  const { ref, progress } = useScrollScene<HTMLDivElement>();
-  const z = mapRange(progress, 0, 0.5, -200, 0) + mapRange(progress, 0.5, 1, 0, -160);
-  const rotX = mapRange(progress, 0, 0.5, 8, 0) + mapRange(progress, 0.5, 1, 0, -6);
-  const op = mapRange(progress, 0, 0.35, 0, 1);
 
   return (
-    <section
-      ref={ref}
-      className="relative py-32 px-6 md:px-12 perspective-2000 bg-background overflow-hidden"
-    >
-      <div
-        className="max-w-7xl mx-auto preserve-3d"
-        style={{
-          transform: `translate3d(0, 0, ${z}px) rotateX(${rotX}deg)`,
-          opacity: op,
-          willChange: "transform, opacity",
-        }}
-      >
+    <section className="relative py-32 px-6 md:px-12 bg-background overflow-hidden preserve-3d">
+      <div className="max-w-7xl mx-auto preserve-3d">
         <div className="flex justify-between items-end mb-20">
           <div>
             <span className="text-[10px] uppercase tracking-[0.3em] text-accent block mb-3">
@@ -84,7 +77,7 @@ function ElementalForms() {
             </Link>
           </div>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-16">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-16 preserve-3d">
           {featured.map((p, i) => (
             <div
               key={p.id}
@@ -111,9 +104,8 @@ function Specimen() {
   return (
     <section
       ref={sceneRef}
-      className="relative bg-background text-foreground py-32 px-6 md:px-12 overflow-hidden perspective-2000"
+      className="relative bg-background text-foreground py-32 px-6 md:px-12 overflow-hidden preserve-3d"
     >
-      {/* Botanical macro video behind a vitrine */}
       <div className="absolute inset-0">
         <LoopVideo
           src={specimenBg.url}
@@ -148,15 +140,12 @@ function Specimen() {
           </Link>
         </div>
         <div className="relative aspect-square flex items-center justify-center preserve-3d">
-          {/* Orbiting copper rings */}
           <div className="absolute inset-0 flex items-center justify-center">
             <div
               className="absolute size-full border border-accent/30 rounded-full"
               style={{ transform: `rotate(${ringRot}deg)` }}
             />
-            <div
-              className="absolute size-[80%] border border-accent/40 rounded-full animate-orbit-reverse"
-            />
+            <div className="absolute size-[80%] border border-accent/40 rounded-full animate-orbit-reverse" />
             <div
               className="absolute size-[60%] border border-accent/20 rounded-full animate-orbit"
               style={{ transform: `rotate(${innerRot}deg)` }}
@@ -181,4 +170,3 @@ function Specimen() {
     </section>
   );
 }
-

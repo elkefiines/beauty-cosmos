@@ -24,7 +24,7 @@ export function RitualFilmStrip() {
   return (
     <section
       ref={ref}
-      className="relative py-32 overflow-hidden bg-foreground text-background perspective-2000"
+      className="relative py-32 overflow-hidden bg-foreground text-background preserve-3d"
     >
       <div className="max-w-7xl mx-auto px-6 md:px-12 mb-16 flex justify-between items-end gap-8">
         <div>

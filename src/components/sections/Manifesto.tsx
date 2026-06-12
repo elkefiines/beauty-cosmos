@@ -24,7 +24,7 @@ export function Manifesto() {
   return (
     <section
       ref={ref}
-      className="relative py-40 px-6 md:px-12 overflow-hidden perspective-2000 bg-background"
+      className="relative py-40 px-6 md:px-12 overflow-hidden preserve-3d bg-background"
     >
       {/* Ambient warm bokeh video */}
       <div
