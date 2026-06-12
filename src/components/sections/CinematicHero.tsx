@@ -85,11 +85,6 @@ export function CinematicHero() {
           </Link>
 
         </div>
-        <div className="lg:col-span-5 relative flex justify-end animate-float">
-          <div className="w-full max-w-sm">
-            <HeroViewer />
-          </div>
-        </div>
       </div>
 
       {/* Scroll cue */}
