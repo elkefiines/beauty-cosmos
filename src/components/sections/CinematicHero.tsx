@@ -1,5 +1,4 @@
 import { Link } from "@tanstack/react-router";
-import { HeroViewer } from "@/components/HeroViewer";
 import { LoopVideo } from "@/components/LoopVideo";
 import { useScrollScene, mapRange } from "@/lib/useScrollScene";
 import heroVideo from "@/assets/hero-atelier.mp4.asset.json";
