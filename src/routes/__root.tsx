@@ -12,6 +12,7 @@ import { Toaster } from "sonner";
 import appCss from "../styles.css?url";
 import { Nav } from "../components/Nav";
 import { Footer } from "../components/Footer";
+import { FooterStage } from "../components/sections/FooterStage";
 
 function NotFoundComponent() {
   return (
@@ -112,7 +113,9 @@ function RootComponent() {
       <main className="min-h-screen">
         <Outlet />
       </main>
-      <Footer />
+      <FooterStage>
+        <Footer />
+      </FooterStage>
       <Toaster position="bottom-right" />
     </QueryClientProvider>
   );
