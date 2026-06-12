@@ -29,22 +29,22 @@ export const Route = createFileRoute("/")({
 function Home() {
   return (
     <div className="bg-background text-foreground overflow-x-clip perspective-2000 preserve-3d">
-      <Stage depth={0} tilt={0} seam={false}>
+      <Stage depth={0} tilt={0} seam={false} label="Hero">
         <CinematicHero />
       </Stage>
-      <Stage depth={260} tilt={7}>
+      <Stage depth={260} tilt={7} label="Reel">
         <PhotoReel />
       </Stage>
-      <Stage depth={300} tilt={8}>
+      <Stage depth={300} tilt={8} label="Film Strip">
         <RitualFilmStrip />
       </Stage>
-      <Stage depth={240} tilt={6}>
+      <Stage depth={240} tilt={6} label="Elemental Forms">
         <ElementalForms />
       </Stage>
-      <Stage depth={280} tilt={7}>
+      <Stage depth={280} tilt={7} label="Specimen">
         <Specimen />
       </Stage>
-      <Stage depth={260} tilt={6}>
+      <Stage depth={260} tilt={6} label="Manifesto">
         <Manifesto />
       </Stage>
     </div>
