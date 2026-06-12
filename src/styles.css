@@ -231,5 +231,16 @@
   background: linear-gradient(90deg, transparent, var(--accent), transparent);
 }
 
+/* Optional scroll-snap mode — anchors the unified 3D camera at each Stage */
+html.scene-snap {
+  scroll-snap-type: y proximity;
+  scroll-behavior: smooth;
+}
+html.scene-snap .scene-anchor {
+  scroll-snap-align: start;
+  scroll-snap-stop: normal;
+}
+
+
 
 
