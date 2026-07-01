@@ -5,7 +5,7 @@ import { getSessionId } from "./session";
 export type CartLine = {
   id: string;
   qty: number;
-  product: { id: string; slug: string; name: string; base_price: number; model_kind: string };
+  product: { id: string; slug: string; name: string; base_price: number; model_kind: string; hero_image_url: string | null };
   shade: { id: string; name: string; hex: string } | null;
 };
 
@@ -20,7 +20,7 @@ export function useCart() {
       const { data, error } = await supabase
         .from("cart_items")
         .select(
-          "id, qty, product:products(id, slug, name, base_price, model_kind), shade:product_shades(id, name, hex)"
+          "id, qty, product:products(id, slug, name, base_price, model_kind, hero_image_url), shade:product_shades(id, name, hex)"
         )
         .eq("session_id", sessionId)
         .order("created_at", { ascending: false });
