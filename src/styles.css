@@ -217,6 +217,11 @@
 .animate-orbit { animation: orbit-slow 40s linear infinite; }
 .animate-orbit-reverse { animation: orbit-slow 28s linear infinite reverse; }
 
+@keyframes kenburns {
+  0%   { transform: scale(1.05) translate(0, 0); }
+  100% { transform: scale(1.15) translate(-2%, -1%); }
+}
+
 /* Vignette overlay for video panels */
 .vignette::after {
   content: "";

@@ -14,7 +14,7 @@ import { Nav } from "../components/Nav";
 import { Footer } from "../components/Footer";
 import { FooterStage } from "../components/sections/FooterStage";
 import { MotionProvider } from "../lib/motion";
-import { MotionControls } from "../components/MotionControls";
+
 
 function NotFoundComponent() {
   return (
@@ -119,7 +119,7 @@ function RootComponent() {
         <FooterStage>
           <Footer />
         </FooterStage>
-        <MotionControls />
+        
         <Toaster position="bottom-right" />
       </MotionProvider>
     </QueryClientProvider>

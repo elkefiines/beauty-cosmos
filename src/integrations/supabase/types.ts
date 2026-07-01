@@ -97,33 +97,48 @@ export type Database = {
           category: string
           created_at: string
           description: string
+          gallery_urls: string[]
           hero_image_url: string | null
           id: string
+          ingredients: string[]
           model_kind: string
           name: string
+          origin: string
           slug: string
+          tagline: string
+          volume: string
         }
         Insert: {
           base_price: number
           category: string
           created_at?: string
           description?: string
+          gallery_urls?: string[]
           hero_image_url?: string | null
           id?: string
+          ingredients?: string[]
           model_kind: string
           name: string
+          origin?: string
           slug: string
+          tagline?: string
+          volume?: string
         }
         Update: {
           base_price?: number
           category?: string
           created_at?: string
           description?: string
+          gallery_urls?: string[]
           hero_image_url?: string | null
           id?: string
+          ingredients?: string[]
           model_kind?: string
           name?: string
+          origin?: string
           slug?: string
+          tagline?: string
+          volume?: string
         }
         Relationships: []
       }
