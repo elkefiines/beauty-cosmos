@@ -1,0 +1,7 @@
+
+ALTER TABLE public.products
+  ADD COLUMN IF NOT EXISTS tagline text NOT NULL DEFAULT '',
+  ADD COLUMN IF NOT EXISTS gallery_urls text[] NOT NULL DEFAULT '{}',
+  ADD COLUMN IF NOT EXISTS ingredients text[] NOT NULL DEFAULT '{}',
+  ADD COLUMN IF NOT EXISTS volume text NOT NULL DEFAULT '',
+  ADD COLUMN IF NOT EXISTS origin text NOT NULL DEFAULT '';
