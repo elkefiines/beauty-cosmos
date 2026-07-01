@@ -10,6 +10,11 @@ export type Product = {
   base_price: number;
   model_kind: "lipstick" | "foundation" | "serum" | "fragrance";
   hero_image_url: string | null;
+  tagline: string;
+  gallery_urls: string[];
+  ingredients: string[];
+  volume: string;
+  origin: string;
 };
 
 export type Shade = {
