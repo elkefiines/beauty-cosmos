@@ -1,88 +1,54 @@
-## Direction
+## 1. Remove the floating "3D" button
 
-Warm botanical apothecary, video-led. Palette locked to `#1a140e` (ink), `#3d2a1a` (bark), `#b97a4a` (copper), `#e8d9c2` (cream). The page reads as a single continuous film: the camera (scroll) glides through 7 sealed rooms in an apothecary, each room a 3D stage with looping video at its core. No static frames anywhere — even idle sections breathe.
+Delete `<MotionControls />` from `src/routes/__root.tsx` and remove the import. Keep the `MotionProvider` (the presets/snap/reduced-motion still power the home scroll scenes) — only the visible control chip + debug overlay go away. `src/components/MotionControls.tsx` becomes unused; delete it too.
 
-## New page structure (top → bottom)
+## 2. Real product imagery + data
 
-1. **Atelier Hero** — full-bleed looping video of slow-pouring oil through warm light; 3D headline planes (`Botanica · Apothecary · Est.`) float at three Z-depths, parting as scroll begins; 3D product viewer slides in from behind the video plane.
-2. **Living Index** — twin counter-marquees of 8 cards (4 video loops + 4 macro stills); cards tilt to cursor, lift in Z on hover, blur neighbors.
-3. **Ritual Film Strip** — 3 cinematic video loops (pour, swatch on skin, mist) mounted as 3D film cells with sprocket holes; the strip pans horizontally as the user scrolls vertically (scroll-to-pan).
-4. **Elemental Forms** — product grid on a curved 3D shelf; each card has its own micro-loop video on hover (steam, drop, petal fall); staggered Z-depth, cursor-driven shelf tilt.
-5. **Specimen** — single hero product framed by an orbiting bronze ring + a second counter-rotating ring; background video loop of botanical macro behind a frosted vitrine.
-6. **Manifesto** — text assembles word-by-word with `rotateX` flips synced to scroll; a slow ambient video loop drifts behind at 20% opacity.
-7. **Footer Entrance** — footer rises from depth as the camera dollies down; copper hairline sweeps across; final ambient loop fades to ink.
+Right now products render as radial-gradient blobs (`ProductCard`) and cart thumbs are flat color swatches (`cart.tsx`). Home reel and hero already use real photography — the catalog does not.
 
-Section seams: animated copper hairlines sweep across as each section enters.
+**Data layer**
+- Add columns to `products`: `hero_image_url` (already exists, currently null), `gallery_urls text[]`, `tagline text`, `ingredients text[]`, `volume text`, `origin text`.
+- Migration to backfill all 8 seeded products with:
+  - real name, tagline, long-form description, price, volume, origin, 4–6 ingredients
+  - `hero_image_url` + 3 `gallery_urls` per product, sourced as Lovable Assets (studio-style bottles / lipstick / serum / fragrance imagery generated via `imagegen` at premium quality, one hero + 3 lifestyle per product, saved under `src/assets/products/<slug>-*.jpg` and uploaded via `lovable-assets create` so URLs are CDN-stable).
+- Extend `Product` type in `src/lib/useProducts.ts` with the new fields.
 
-## Media plan (all generated locally, served via Lovable Assets)
+## 3. Shop page — match the home cinematic language
 
-Generate fresh assets — discard the previous set since the look changes:
-- 1 hero video (10s, 1080p, 16:9) — slow pour of amber oil, warm rim light, shallow depth
-- 3 ritual videos (5s each, 1080p) — pour close-up, swatch on skin, fine mist
-- 4 reel videos (5s each, 1080p, 4:3) — petals falling, steam curl, drop hitting water, hand on jar
-- 1 specimen background video (10s, 1080p) — botanical macro drift
-- 1 manifesto ambient video (10s, 1080p) — out-of-focus warm bokeh
-- 4 macro stills (1280×1280 jpg) — texture closeups for reel + grid posters
+Rewrite `src/routes/shop.tsx` to feel like a continuation of the home film:
 
-All videos: `muted`, `loop`, `playsInline`, `preload="metadata"`, lazy-mounted via IntersectionObserver, with poster jpg for SSR + reduced-motion.
+- Wrap the page contents in the same `<Stage label="Shop Header">` / `<Stage label="Catalog Grid">` primitives so scroll-depth, tilt, and copper seams carry over.
+- Header: oversized serif italic title, small copper eyebrow, thin animated seam beneath — identical treatment to home section headings.
+- Category filter row rendered as recessed pill nav with the same border/tracking as the home nav.
+- Product grid: replace `ProductCard`'s gradient blob with a real `hero_image_url` `<img>` inside the same `aspect-[3/4] bg-surface` frame; add a mouse-tracked 3D tilt on hover (reusing the pattern from `HeroViewer`), a slow zoom-in on the image, and the existing giant italic index number sliding up from behind.
+- Add a short editorial intro block above the grid (one line of manifesto copy + a hairline).
+- Footer already wrapped by `FooterStage` in `__root.tsx` — nothing extra needed.
 
-## Design tokens (locked, written into `src/styles.css`)
+## 4. Product detail page
 
-```text
---ink:          oklch from #1a140e
---bark:         oklch from #3d2a1a
---copper:       oklch from #b97a4a
---cream:        oklch from #e8d9c2
---copper-glow:  oklch(lighter copper)
---gradient-warm: linear-gradient(180deg, ink → bark)
---gradient-copper: linear-gradient(135deg, copper → copper-glow)
---shadow-vitrine: layered warm shadow + copper inner glow
-```
+`src/routes/product.$slug.tsx` keeps the 3D viewer (per your earlier instruction), and gains real editorial content around it:
 
-Typography: Cormorant Garamond italic display (`h1`, `h2`), Inter for body — already aligns with apothecary editorial register.
+- Two-column layout stays. Left column becomes a **stacked media column**: 3D viewer on top, then a vertical scroll gallery of the real `gallery_urls` images (each in `<Stage>` so they enter with depth as you scroll).
+- Right column gains: tagline under the title, longer description, ingredients list styled as bordered rows, `volume` + `origin` in the existing two-up block (currently hardcoded "Cold-blended / Brussels" — read from data).
+- Add a "The Ritual" strip below the fold — 3 numbered steps + one real lifestyle photo, wrapped in `<Stage>` for the same recession animation used on home.
+- Add a "You may also love" 4-up mini-grid at the bottom using `ProductCard` (same category, excluding current).
 
-## Motion system
+## 5. Cart page
 
-- Shared `perspective: 2400px` wrapper on `<main>`; every section a `transform-style: preserve-3d` stage.
-- `useScrollScene(sectionRef)` (already exists) returns `{ progress, enter, exit, center }` — extended to expose `translateZ`, `rotateX`, `opacity` mappings via CSS vars; one RAF loop, IntersectionObserver-gated.
-- Per-section choreography:
-  - Hero: stage `translateZ(0 → -600px)` + `rotateX(0 → 8deg)` + opacity 1 → 0.4 as scroll progresses
-  - Reel: rows counter-translate X; cards tilt on cursor (`rotateY ±10deg`, `rotateX ±6deg`)
-  - Film Strip: horizontal pan `translateX(0 → -60%)` tied to scroll progress
-  - Elemental Forms: shelf `rotateX(6deg → 0)`, cards Z-stagger -120 → 0 on enter
-  - Specimen: rings rotate continuously + offset by scroll
-  - Manifesto: each word `rotateX(-90 → 0)` + `opacity 0 → 1` mapped to its slice of progress
-  - Footer: `translateY(60px → 0)` + `translateZ(-200 → 0)` + copper line `scaleX(0 → 1)`
-- Section seams: copper hairline `scaleX` sweep + small `translateZ` parallax.
-- `prefers-reduced-motion`: disables all Z transforms, parallax, marquees, video autoplay → falls back to posters + simple fades.
-- Mobile (<768px): Z ranges reduced ~40%, cursor tilt off, hero video swapped for poster, single-row reel, film strip becomes vertical stack.
+`src/routes/cart.tsx` polish:
 
-## Files
+- Replace the flat colored square thumbnail with the product's real `hero_image_url` and a small shade dot overlaid at the bottom-right when a shade is chosen.
+- Wrap the header and the line-items block in `<Stage>` for the same scroll-in choreography as home.
+- Empty state: use one lifestyle image behind the "Your bag is empty" panel with a subtle Ken Burns drift.
+- Summary panel: keep sticky, add a thin copper hairline seam at the top matching `SectionSeam`.
 
-**Create**
-- `src/components/sections/AtelierHero.tsx` (replaces CinematicHero)
-- `src/components/sections/LivingIndex.tsx` (replaces PhotoReel usage on home)
-- `src/components/sections/ElementalForms.tsx`
-- `src/components/sections/Specimen.tsx`
-- `src/components/sections/FooterStage.tsx`
-- `src/components/VitrineCard.tsx` — reusable tilt-card with video/image swap
-- `src/components/OrbitRing.tsx` — SVG/CSS bronze rings for Specimen
-- New asset pointers: `hero-atelier.mp4.asset.json`, `ritual-pour-v2.mp4.asset.json`, `ritual-swatch-v2.mp4.asset.json`, `ritual-mist-v2.mp4.asset.json`, `reel-petal.mp4.asset.json`, `reel-steam.mp4.asset.json`, `reel-drop.mp4.asset.json`, `reel-hand.mp4.asset.json`, `specimen-bg.mp4.asset.json`, `manifesto-ambient.mp4.asset.json`, 4 macro `.jpg`
+## 6. Nav consistency
 
-**Edit**
-- `src/routes/index.tsx` — recompose into the 7 new sections, shared perspective wrapper
-- `src/styles.css` — repaint tokens to warm botanical palette, add gradients/shadows, vitrine + sprocket + orbit utilities, reduced-motion + mobile overrides
-- `src/lib/useScrollScene.ts` — expose progress as CSS vars on the element
-- `src/components/LoopVideo.tsx` — add `poster` prop, defensive play() catch
-- `src/components/SectionSeam.tsx` — restyle in copper
+Verify `src/components/Nav.tsx` matches home aesthetic on all inner routes (transparent over hero, solid-blur on scroll). No structural change unless it doesn't.
 
-**Remove from home use** (files kept, just unused on `/`)
-- `src/components/sections/CinematicHero.tsx`, `RitualFilmStrip.tsx`, `Manifesto.tsx`, `PhotoReel.tsx` — superseded by new sections (RitualFilmStrip kept, restyled to copper; Manifesto kept, restyled).
+## Technical notes
 
-## Out of scope
-
-No routing, schema, auth, cart, or product-data changes. Header/nav and CartDrawer untouched. Other routes untouched.
-
-## Verification
-
-After build: open `/` in preview at mobile (411) and desktop (1440), scroll top→bottom, confirm no 500s, no console errors, videos autoplay and loop, reduced-motion fallback works (toggle OS setting check via class hook).
+- All new images generated via `imagegen--generate_image` (premium for hero shots, standard for gallery) and uploaded through `lovable-assets create` so they live on CDN, not in the repo bundle.
+- One SQL migration adds columns + backfills all 8 products. `GRANT`s already exist on `products`; no policy changes.
+- No new dependencies. All motion reuses `Stage`, `FooterStage`, `useScrollScene`, `useReveal`.
+- Deliverable order: (1) remove button, (2) migration + assets, (3) shop, (4) product, (5) cart.
