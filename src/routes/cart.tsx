@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Minus, Plus, X } from "lucide-react";
 import { useCart } from "@/lib/useCart";
 import { Stage } from "@/components/sections/Stage";
@@ -15,6 +15,7 @@ export const Route = createFileRoute("/cart")({
 
 function CartPage() {
   const { lines, subtotal, updateQty, remove, isLoading } = useCart();
+  const navigate = useNavigate();
 
   return (
     <div className="perspective-2000">
@@ -136,7 +137,7 @@ function CartPage() {
                   <span className="font-serif italic text-3xl">${subtotal.toFixed(2)}</span>
                 </div>
                 <button
-                  onClick={() => alert("Checkout coming soon.")}
+                  onClick={() => navigate({ to: "/checkout" })}
                   className="w-full py-4 bg-foreground text-background text-[10px] uppercase tracking-[0.3em] hover:bg-accent transition-colors"
                 >
                   Proceed to Checkout
