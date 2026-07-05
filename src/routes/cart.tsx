@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Minus, Plus, X } from "lucide-react";
 import { useCart } from "@/lib/useCart";
 import { Stage } from "@/components/sections/Stage";
