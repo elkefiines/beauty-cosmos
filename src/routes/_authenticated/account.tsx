@@ -1,5 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Stage } from "@/components/sections/Stage";
@@ -13,10 +14,34 @@ export const Route = createFileRoute("/_authenticated/account")({
 function AccountPage() {
   const { user } = useAuth();
   const { data: isAdmin } = useIsAdmin();
+  const qc = useQueryClient();
   const navigate = useNavigate();
   const [displayName, setDisplayName] = useState("");
   const [optIn, setOptIn] = useState(false);
   const [busy, setBusy] = useState(false);
+
+  const { data: adminExists } = useQuery({
+    queryKey: ["admin-exists"],
+    queryFn: async () => {
+      const { count } = await supabase
+        .from("user_roles")
+        .select("user_id", { count: "exact", head: true })
+        .eq("role", "admin");
+      return (count ?? 0) > 0;
+    },
+  });
+
+  const claimAdmin = async () => {
+    const { data, error } = await supabase.rpc("claim_first_admin");
+    if (error) return toast.error(error.message);
+    if (data) {
+      toast.success("You are now the atelier admin.");
+      qc.invalidateQueries();
+    } else {
+      toast.error("An admin already exists.");
+      qc.invalidateQueries({ queryKey: ["admin-exists"] });
+    }
+  };
 
   useEffect(() => {
     if (!user) return;
