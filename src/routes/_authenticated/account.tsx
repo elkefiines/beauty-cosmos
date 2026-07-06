@@ -115,6 +115,11 @@ function AccountPage() {
           <nav className="mt-16 grid gap-3 border-t border-border pt-8 text-[10px] uppercase tracking-[0.25em]">
             <Link to="/account/orders" className="hover:text-accent">Order history →</Link>
             {isAdmin && <Link to="/admin" className="hover:text-accent">Admin →</Link>}
+            {!isAdmin && adminExists === false && (
+              <button onClick={claimAdmin} className="text-left text-accent hover:opacity-70">
+                Claim atelier admin →
+              </button>
+            )}
             <button onClick={signOut} className="text-left text-muted-foreground hover:text-accent">
               Sign out
             </button>
