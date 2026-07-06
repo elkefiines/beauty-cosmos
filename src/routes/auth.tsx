@@ -114,12 +114,29 @@ function AuthPage() {
             </button>
           </form>
 
-          <button
-            onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
-            className="mt-8 text-[10px] uppercase tracking-[0.25em] text-muted-foreground hover:text-accent"
-          >
-            {mode === "signin" ? "No account? Create one →" : "Already have one? Sign in →"}
-          </button>
+          <div className="mt-8 flex flex-col gap-3 text-[10px] uppercase tracking-[0.25em]">
+            <button
+              onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
+              className="text-left text-muted-foreground hover:text-accent"
+            >
+              {mode === "signin" ? "No account? Create one →" : "Already have one? Sign in →"}
+            </button>
+            {mode === "signin" && (
+              <button
+                onClick={async () => {
+                  if (!email) return toast.error("Enter your email above first.");
+                  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+                    redirectTo: window.location.origin + "/reset-password",
+                  });
+                  if (error) return toast.error(error.message);
+                  toast.success("Reset link sent. Check your email.");
+                }}
+                className="text-left text-muted-foreground hover:text-accent"
+              >
+                Forgot password? →
+              </button>
+            )}
+          </div>
 
           <div className="mt-16 text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
             <Link to="/" className="hover:text-accent">← Back to atelier</Link>
