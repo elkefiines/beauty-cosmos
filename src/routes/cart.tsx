@@ -17,7 +17,7 @@ export const Route = createFileRoute("/cart")({
 function CartPage() {
   const { lines, subtotal, updateQty, remove, isLoading } = useCart();
   const { data: products = [] } = useProducts();
-  const emptyBg = products[Math.floor(Math.random() * Math.max(products.length, 1))]?.hero_image_url;
+  const emptyBg = products[0]?.hero_image_url;
   const navigate = useNavigate();
 
   return (
