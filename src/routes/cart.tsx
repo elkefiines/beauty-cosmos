@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Minus, Plus, X } from "lucide-react";
 import { useCart } from "@/lib/useCart";
+import { useProducts } from "@/lib/useProducts";
 import { Stage } from "@/components/sections/Stage";
 
 export const Route = createFileRoute("/cart")({
@@ -15,6 +16,8 @@ export const Route = createFileRoute("/cart")({
 
 function CartPage() {
   const { lines, subtotal, updateQty, remove, isLoading } = useCart();
+  const { data: products = [] } = useProducts();
+  const emptyBg = products[0]?.hero_image_url;
   const navigate = useNavigate();
 
   return (
@@ -35,7 +38,7 @@ function CartPage() {
               <div
                 aria-hidden
                 className="absolute inset-0 opacity-30 bg-cover bg-center animate-[kenburns_18s_ease-in-out_infinite_alternate]"
-                style={{ backgroundImage: "url(/__l5e/assets-v1/a8d9f195-76b2-426a-b16e-69f6116c8f3d/lumina-serum-no-4.jpg)" }}
+                style={{ backgroundImage: emptyBg ? `url(${emptyBg})` : undefined }}
               />
               <div className="relative text-center py-24">
                 <p className="font-serif italic text-3xl mb-4">Your bag is empty.</p>

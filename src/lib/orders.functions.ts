@@ -78,3 +78,19 @@ export const createOrderFromCart = createServerFn({ method: "POST" })
 
     return { orderId: order.id, total };
   });
+
+export const getOrderById = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((input) => z.object({ id: z.string().uuid() }).parse(input))
+  .handler(async ({ data, context }) => {
+    const { supabase, userId } = context;
+    const { data: order, error } = await supabase
+      .from("orders")
+      .select("id, email, status, subtotal, shipping, tax, total, currency, shipping_address, created_at, order_items(id, name_snapshot, shade_snapshot, price_snapshot, qty, hero_image_url)")
+      .eq("id", data.id)
+      .eq("user_id", userId)
+      .maybeSingle();
+    if (error) throw error;
+    if (!order) throw new Error("Order not found.");
+    return order;
+  });

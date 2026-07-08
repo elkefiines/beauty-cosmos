@@ -6,9 +6,10 @@ import { useCart } from "@/lib/useCart";
 import { ShadeSelector } from "@/components/ShadeSelector";
 import { Stage } from "@/components/sections/Stage";
 import { ProductCard } from "@/components/ProductCard";
+import { ProductGallery } from "@/components/ProductGallery";
 
-const ProductViewer = lazy(() =>
-  import("@/components/viewer/ProductViewer").then((m) => ({ default: m.ProductViewer }))
+const ProductShowcase3D = lazy(() =>
+  import("@/components/viewer/ProductShowcase3D").then((m) => ({ default: m.ProductShowcase3D }))
 );
 
 export const Route = createFileRoute("/product/$slug")({
@@ -27,6 +28,7 @@ function ProductPage() {
   const { data, isLoading } = useProduct(slug);
   const { add } = useCart();
   const [shadeId, setShadeId] = useState<string | null>(null);
+  const [imageIdx, setImageIdx] = useState(0);
   const { data: allProducts = [] } = useProducts();
 
   if (isLoading) {
@@ -53,6 +55,14 @@ function ProductPage() {
 
   const related = allProducts.filter((p) => p.category === product.category && p.slug !== product.slug).slice(0, 4);
 
+  const galleryRaw = (product.gallery_urls && product.gallery_urls.length > 0
+    ? product.gallery_urls
+    : [product.hero_image_url]
+  ).filter((u): u is string => !!u);
+  const gallery = Array.from(new Set(galleryRaw));
+
+  const activeImage = gallery[Math.min(imageIdx, gallery.length - 1)] ?? product.hero_image_url ?? "";
+
   const handleAdd = () => {
     add.mutate(
       { productId: product.id, shadeId: selected?.id ?? null, qty: 1 },
@@ -75,7 +85,7 @@ function ProductPage() {
           </Link>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
-            {/* Media column: 3D viewer + hero photo */}
+            {/* Media column: 3D showcase + real image gallery */}
             <div className="lg:col-span-7 flex flex-col gap-6">
               <div className="relative w-full aspect-square bg-surface overflow-hidden border border-border">
                 <Suspense fallback={
@@ -83,17 +93,30 @@ function ProductPage() {
                     Preparing 3D environment…
                   </div>
                 }>
-                  <ProductViewer kind={product.model_kind} color={color} className="absolute inset-0" />
+                  <ProductShowcase3D
+                    images={gallery}
+                    activeIndex={Math.min(imageIdx, gallery.length - 1)}
+                    accentHex={color}
+                    className="absolute inset-0"
+                  />
                 </Suspense>
                 <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-3 px-4 py-2 bg-background/80 backdrop-blur-sm border border-border">
                   <div className="size-1.5 rounded-full bg-accent animate-pulse" />
-                  <span className="text-[9px] font-medium tracking-[0.25em] uppercase">Drag to rotate</span>
+                  <span className="text-[9px] font-medium tracking-[0.25em] uppercase">Move to inspect · tap thumb to swap</span>
                 </div>
               </div>
-              {product.hero_image_url && (
+              {gallery.length > 0 && (
+                <ProductGallery
+                  images={gallery}
+                  activeIndex={Math.min(imageIdx, gallery.length - 1)}
+                  onSelect={setImageIdx}
+                  alt={product.name}
+                />
+              )}
+              {activeImage && (
                 <div className="w-full aspect-[4/5] bg-surface overflow-hidden border border-border">
                   <img
-                    src={product.hero_image_url}
+                    src={activeImage}
                     alt={product.name}
                     loading="lazy"
                     width={1024}
@@ -103,6 +126,7 @@ function ProductPage() {
                 </div>
               )}
             </div>
+
 
             {/* Detail column */}
             <div className="lg:col-span-5 flex flex-col gap-10 lg:sticky lg:top-32 lg:self-start">

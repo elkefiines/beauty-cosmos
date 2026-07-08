@@ -40,6 +40,12 @@ function CheckoutPage() {
     });
   }, [navigate]);
 
+  useEffect(() => {
+    if (checked && lines.length === 0) {
+      navigate({ to: "/cart" });
+    }
+  }, [checked, lines.length, navigate]);
+
   const shipping = subtotal > 100 ? 0 : 8;
   const total = subtotal + shipping;
 

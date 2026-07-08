@@ -101,6 +101,9 @@ function Specimen() {
   const { ref: sceneRef, progress } = useScrollScene<HTMLDivElement>();
   const ringRot = mapRange(progress, 0, 1, -40, 40);
   const innerRot = mapRange(progress, 0, 1, 60, -60);
+  const { data: products = [] } = useProducts();
+  const featured = products[0];
+
   return (
     <section
       ref={sceneRef}
@@ -153,18 +156,41 @@ function Specimen() {
             <div className="absolute size-[40%] border border-accent/50 rounded-full" />
           </div>
           <div className="relative z-10 size-56 rounded-full bg-gradient-to-br from-accent/50 to-transparent blur-3xl animate-drift" />
-          <div className="absolute z-20 text-center bg-background/60 backdrop-blur-sm p-10 border border-accent/30 tilt-card shadow-vitrine">
-            <div className="size-12 rounded-full border border-accent/40 mx-auto mb-4 flex items-center justify-center">
-              <div className="size-2 bg-accent rounded-full animate-pulse" />
+          {featured ? (
+            <Link
+              to="/product/$slug"
+              params={{ slug: featured.slug }}
+              className="absolute z-20 text-center bg-background/70 backdrop-blur-sm p-6 border border-accent/30 tilt-card shadow-vitrine w-64 group"
+            >
+              {featured.hero_image_url && (
+                <div className="mx-auto mb-4 size-32 overflow-hidden border border-border">
+                  <img
+                    src={featured.hero_image_url}
+                    alt={featured.name}
+                    loading="lazy"
+                    className="w-full h-full object-cover transition-transform duration-[1400ms] group-hover:scale-110"
+                  />
+                </div>
+              )}
+              <span className="text-[10px] uppercase tracking-[0.3em] block mb-1 text-accent">
+                {featured.category}
+              </span>
+              <span className="font-serif italic text-lg block leading-tight">{featured.name}</span>
+              <span className="text-[9px] text-muted-foreground uppercase tracking-wider mt-3 block">
+                {featured.volume || "Hand-poured"} · ${Number(featured.base_price).toFixed(0)}
+              </span>
+            </Link>
+          ) : (
+            <div className="absolute z-20 text-center bg-background/60 backdrop-blur-sm p-10 border border-accent/30 tilt-card shadow-vitrine">
+              <div className="size-12 rounded-full border border-accent/40 mx-auto mb-4 flex items-center justify-center">
+                <div className="size-2 bg-accent rounded-full animate-pulse" />
+              </div>
+              <span className="text-[10px] uppercase tracking-[0.3em] block mb-1 text-accent">
+                Hand-poured
+              </span>
+              <span className="font-serif italic text-lg block">Loading specimen…</span>
             </div>
-            <span className="text-[10px] uppercase tracking-[0.3em] block mb-1 text-accent">
-              Hand-poured
-            </span>
-            <span className="font-serif italic text-lg block">Amber Vial · 30ml</span>
-            <span className="text-[8px] text-muted-foreground uppercase tracking-wider mt-2 block">
-              Rotate to inspect
-            </span>
-          </div>
+          )}
         </div>
       </div>
     </section>
