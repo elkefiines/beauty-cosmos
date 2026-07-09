@@ -1,4 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { Minus, Plus, X } from "lucide-react";
 import { useCart } from "@/lib/useCart";
 import { useProducts } from "@/lib/useProducts";
@@ -19,6 +20,9 @@ function CartPage() {
   const { data: products = [] } = useProducts();
   const emptyBg = products[0]?.hero_image_url;
   const navigate = useNavigate();
+  const [hydrated, setHydrated] = useState(false);
+  useEffect(() => setHydrated(true), []);
+  const showLoading = !hydrated || isLoading;
 
   return (
     <div className="perspective-2000">
@@ -31,7 +35,7 @@ function CartPage() {
 
       <Stage label="Cart Contents" depth={220} tilt={5}>
         <div className="pb-24 px-6 md:px-12 max-w-5xl mx-auto">
-          {isLoading ? (
+          {showLoading ? (
             <p className="text-xs uppercase tracking-widest text-muted-foreground">Loading…</p>
           ) : lines.length === 0 ? (
             <div className="relative overflow-hidden border-y border-border">
