@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState, lazy, Suspense } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import { useProduct, useProducts } from "@/lib/useProducts";
 import { useCart } from "@/lib/useCart";
@@ -8,9 +8,6 @@ import { Stage } from "@/components/sections/Stage";
 import { ProductCard } from "@/components/ProductCard";
 import { ProductGallery } from "@/components/ProductGallery";
 
-const ProductViewer = lazy(() =>
-  import("@/components/viewer/ProductViewer").then((m) => ({ default: m.ProductViewer }))
-);
 
 export const Route = createFileRoute("/product/$slug")({
   head: ({ params }) => ({
@@ -87,23 +84,7 @@ function ProductPage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
             {/* Media column: 3D showcase + real image gallery */}
             <div className="lg:col-span-7 flex flex-col gap-6">
-              <div className="relative w-full aspect-square bg-surface overflow-hidden border border-border">
-                <Suspense fallback={
-                  <div className="absolute inset-0 flex items-center justify-center text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
-                    Preparing 3D environment…
-                  </div>
-                }>
-                  <ProductViewer
-                    kind={product.model_kind}
-                    color={color}
-                    className="absolute inset-0"
-                  />
-                </Suspense>
-                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-3 px-4 py-2 bg-background/80 backdrop-blur-sm border border-border">
-                  <div className="size-1.5 rounded-full bg-accent animate-pulse" />
-                  <span className="text-[9px] font-medium tracking-[0.25em] uppercase">Drag to rotate · scroll to zoom</span>
-                </div>
-              </div>
+              {/* 3D viewer temporarily hidden */}
               {gallery.length > 0 && (
                 <ProductGallery
                   images={gallery}
