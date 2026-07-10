@@ -85,14 +85,6 @@ function ProductPage() {
             {/* Media column: 3D showcase + real image gallery */}
             <div className="lg:col-span-7 flex flex-col gap-6">
               {/* 3D viewer temporarily hidden */}
-              {gallery.length > 0 && (
-                <ProductGallery
-                  images={gallery}
-                  activeIndex={Math.min(imageIdx, gallery.length - 1)}
-                  onSelect={setImageIdx}
-                  alt={product.name}
-                />
-              )}
               {activeImage && (
                 <div className="w-full aspect-[4/5] bg-surface overflow-hidden border border-border">
                   <img
@@ -104,6 +96,14 @@ function ProductPage() {
                     className="w-full h-full object-cover"
                   />
                 </div>
+              )}
+              {gallery.length > 0 && (
+                <ProductGallery
+                  images={gallery}
+                  activeIndex={Math.min(imageIdx, gallery.length - 1)}
+                  onSelect={setImageIdx}
+                  alt={product.name}
+                />
               )}
             </div>
 
