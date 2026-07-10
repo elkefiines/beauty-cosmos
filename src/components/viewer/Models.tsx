@@ -1,5 +1,4 @@
 import { useRef } from "react";
-import { useFrame } from "@react-three/fiber";
 import type { Mesh, Group } from "three";
 
 const matte = (color: string) => ({ color, roughness: 0.55, metalness: 0.05 });
@@ -8,7 +7,6 @@ const glass = (color: string) => ({ color, roughness: 0.05, metalness: 0.1, tran
 
 export function LipstickModel({ color }: { color: string }) {
   const ref = useRef<Group>(null);
-  useFrame((_, dt) => { if (ref.current) ref.current.rotation.y += dt * 0.15; });
   return (
     <group ref={ref}>
       {/* Base tube */}
@@ -37,7 +35,6 @@ export function LipstickModel({ color }: { color: string }) {
 
 export function FoundationModel({ color }: { color: string }) {
   const ref = useRef<Group>(null);
-  useFrame((_, dt) => { if (ref.current) ref.current.rotation.y += dt * 0.15; });
   return (
     <group ref={ref}>
       {/* Bottle body */}
@@ -66,7 +63,6 @@ export function FoundationModel({ color }: { color: string }) {
 
 export function SerumModel({ color }: { color: string }) {
   const ref = useRef<Group>(null);
-  useFrame((_, dt) => { if (ref.current) ref.current.rotation.y += dt * 0.15; });
   return (
     <group ref={ref}>
       <mesh position={[0, -0.3, 0]} castShadow>
@@ -91,7 +87,6 @@ export function SerumModel({ color }: { color: string }) {
 
 export function FragranceModel({ color }: { color: string }) {
   const ref = useRef<Group>(null);
-  useFrame((_, dt) => { if (ref.current) ref.current.rotation.y += dt * 0.15; });
   return (
     <group ref={ref}>
       <mesh position={[0, -0.2, 0]} castShadow>

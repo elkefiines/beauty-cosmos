@@ -8,8 +8,8 @@ import { Stage } from "@/components/sections/Stage";
 import { ProductCard } from "@/components/ProductCard";
 import { ProductGallery } from "@/components/ProductGallery";
 
-const ProductShowcase3D = lazy(() =>
-  import("@/components/viewer/ProductShowcase3D").then((m) => ({ default: m.ProductShowcase3D }))
+const ProductViewer = lazy(() =>
+  import("@/components/viewer/ProductViewer").then((m) => ({ default: m.ProductViewer }))
 );
 
 export const Route = createFileRoute("/product/$slug")({
@@ -93,16 +93,15 @@ function ProductPage() {
                     Preparing 3D environment…
                   </div>
                 }>
-                  <ProductShowcase3D
-                    images={gallery}
-                    activeIndex={Math.min(imageIdx, gallery.length - 1)}
-                    accentHex={color}
+                  <ProductViewer
+                    kind={product.model_kind}
+                    color={color}
                     className="absolute inset-0"
                   />
                 </Suspense>
                 <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-3 px-4 py-2 bg-background/80 backdrop-blur-sm border border-border">
                   <div className="size-1.5 rounded-full bg-accent animate-pulse" />
-                  <span className="text-[9px] font-medium tracking-[0.25em] uppercase">Move to inspect · tap thumb to swap</span>
+                  <span className="text-[9px] font-medium tracking-[0.25em] uppercase">Drag to rotate · scroll to zoom</span>
                 </div>
               </div>
               {gallery.length > 0 && (
