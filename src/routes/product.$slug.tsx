@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState, lazy, Suspense } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import { useProduct, useProducts } from "@/lib/useProducts";
 import { useCart } from "@/lib/useCart";
@@ -8,9 +8,6 @@ import { Stage } from "@/components/sections/Stage";
 import { ProductCard } from "@/components/ProductCard";
 import { ProductGallery } from "@/components/ProductGallery";
 
-const ProductViewer = lazy(() =>
-  import("@/components/viewer/ProductViewer").then((m) => ({ default: m.ProductViewer }))
-);
 
 export const Route = createFileRoute("/product/$slug")({
   head: ({ params }) => ({
